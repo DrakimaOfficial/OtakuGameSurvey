@@ -1,2 +1,2 @@
 # OtakuGameSurvey
-\OtakuGameSurvey
+OtakuGameSurvey
