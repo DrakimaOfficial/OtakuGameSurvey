@@ -1,0 +1,25 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Otaku Game Survey";
+}
+
+<div class="splash-container">
+    <div class="splash-content text-center">
+        <h1 class="splash-title animate__animated animate__fadeIn">Otaku Game Survey</h1>
+        <p class="splash-subtitle animate__animated animate__fadeIn animate__delay-1s">Find Your Perfect Game in a Neon World!</p>
+        <a href="/Survey/Index" class="btn btn-primary btn-lg splash-button animate__animated animate__bounceIn animate__delay-2s">Enter Survey</a>
+        <div class="splash-links animate__animated animate__fadeIn animate__delay-3s">
+            <a href="/Account/Register" class="text-neon">Sign Up</a> | <a href="/Account/Login" class="text-neon">Log In</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Subtle glitch effect for title
+        document.querySelector('.splash-title').addEventListener('mouseover', function() {
+            this.classList.add('glitch');
+            setTimeout(() => this.classList.remove('glitch'), 500);
+        });
+    </script>
+}

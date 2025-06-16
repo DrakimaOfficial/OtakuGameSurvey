@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreMvc", "CoreMvc.csproj", "{1B903E31-D22F-4D9D-B0F2-645F9D864B0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webform", "..\Webform\Webform.csproj", "{6BB1A427-2F67-4E20-B5F4-66138865FA6B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B903E31-D22F-4D9D-B0F2-645F9D864B0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B903E31-D22F-4D9D-B0F2-645F9D864B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B903E31-D22F-4D9D-B0F2-645F9D864B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B903E31-D22F-4D9D-B0F2-645F9D864B0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BB1A427-2F67-4E20-B5F4-66138865FA6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB1A427-2F67-4E20-B5F4-66138865FA6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB1A427-2F67-4E20-B5F4-66138865FA6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB1A427-2F67-4E20-B5F4-66138865FA6B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2218FC42-5BAC-4948-92E3-EFE1FAD16057}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,2 @@
+# OtakuGameSurvey
+\OtakuGameSurvey

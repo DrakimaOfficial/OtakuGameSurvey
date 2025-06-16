@@ -1,0 +1,54 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Survey Results";
+}
+
+<h1 class="my-4">Survey Results</h1>
+<div id="results-app">
+    <div v-if="!isAuthenticated" class="text-center">
+        <p class="text-neon">Please <a href="/Account/Login" class="text-neon">log in</a> to view your results.</p>
+    </div>
+    <div v-else-if="topGenre" class="card mb-4">
+        <div class="card-header">
+            Your Top Genre
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ topGenre.name }}</h5>
+            <p class="card-text">{{ topGenre.description }}</p>
+            <a href="/Survey/Index" class="btn btn-primary">Retake Survey</a>
+        </div>
+    </div>
+    <div v-else class="alert alert-info">
+        No results available. Please complete the survey first.
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        new Vue({
+            el: '#results-app',
+            data: {
+                topGenre: null,
+                isAuthenticated: @Json.Serialize(User.Identity.IsAuthenticated)
+            },
+            mounted() {
+                if (this.isAuthenticated) {
+                    this.loadTopGenre();
+                }
+            },
+            methods: {
+                loadTopGenre() {
+                    axios.get('https://localhost:44345/api/Survey/TopGenre')
+                        .then(response => {
+                            this.topGenre = response.data;
+                        })
+                        .catch(error => {
+                            if (error.response && error.response.status === 401) {
+                                window.location.href = '/Account/Login';
+                            }
+                        });
+                }
+            }
+        });
+    </script>
+}

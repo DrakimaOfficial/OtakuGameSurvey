@@ -1,0 +1,115 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Game Genre Survey";
+}
+
+<h1 class="my-4">Game Genre Survey</h1>
+<div id="survey-app">
+    <div v-if="!isAuthenticated" class="text-center">
+        <p class="text-neon">Please <a href="/Account/Login" class="text-neon">log in</a> or <a href="/Account/Register" class="text-neon">sign up</a> to take the survey.</p>
+    </div>
+    <div v-else-if="genres.length === 0" class="text-center">
+        <p>Loading genres...</p>
+    </div>
+    <div v-else-if="currentGenreIndex >= genres.length" class="text-center">
+        <p>Survey completed! Redirecting to results...</p>
+    </div>
+    <div v-else>
+        <div class="card mb-4">
+            <div class="card-header">
+                Genre {{ currentGenreIndex + 1 }} of {{ genres.length }}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ genres[currentGenreIndex].name }}</h5>
+                <p class="card-text">{{ genres[currentGenreIndex].description }}</p>
+                <div class="mb-3">
+                    <label for="preferenceScore" class="form-label">Rate this genre (1 = Dislike, 5 = Love):</label>
+                    <select v-model.number="preferenceScore" id="preferenceScore" class="form-select">
+                        <option value="0" disabled>Select a score</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                    {{ errorMessage }}
+                </div>
+                <button class="btn btn-primary" @@click="submitResponse" :disabled="!preferenceScore">Next</button>
+                <button class="btn btn-secondary ms-2" @@click="goToPrevious" v-if="currentGenreIndex > 0">Previous</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        new Vue({
+            el: '#survey-app',
+            data: {
+                genres: [],
+                currentGenreIndex: 0,
+                preferenceScore: 0,
+                errorMessage: '',
+                isAuthenticated: @Json.Serialize(User.Identity.IsAuthenticated)
+            },
+            mounted() {
+                if (this.isAuthenticated) {
+                    this.loadGenres();
+                }
+            },
+            methods: {
+                loadGenres() {
+                    axios.get('https://localhost:44345/api/Survey/Genres')
+                        .then(response => {
+                            this.genres = response.data;
+                        })
+                        .catch(error => {
+                            if (error.response && error.response.status === 401) {
+                                window.location.href = '/Account/Login';
+                            } else {
+                                this.errorMessage = 'Failed to load genres: ' + (error.response?.data?.message || error.message);
+                            }
+                        });
+                },
+                submitResponse() {
+                    if (!this.preferenceScore) {
+                        this.errorMessage = 'Please select a preference score.';
+                        return;
+                    }
+
+                    const genre = this.genres[this.currentGenreIndex];
+                    axios.post('https://localhost:44345/api/Survey/Submit', {
+                        genreId: genre.id,
+                        preferenceScore: this.preferenceScore
+                    })
+                    .then(response => {
+                        this.currentGenreIndex++;
+                        this.preferenceScore = 0;
+                        this.errorMessage = '';
+                        if (this.currentGenreIndex >= this.genres.length) {
+                            setTimeout(() => {
+                                window.location.href = '/Survey/Results';
+                            }, 1000);
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response && error.response.status === 401) {
+                            window.location.href = '/Account/Login';
+                        } else {
+                            this.errorMessage = 'Failed to submit response: ' + (error.response?.data?.message || error.message);
+                        }
+                    });
+                },
+                goToPrevious() {
+                    if (this.currentGenreIndex > 0) {
+                        this.currentGenreIndex--;
+                        this.preferenceScore = 0;
+                        this.errorMessage = '';
+                    }
+                }
+            }
+        });
+    </script>
+}
